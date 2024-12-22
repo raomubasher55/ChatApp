@@ -1,0 +1,97 @@
+<div class="dashboard flex h-screen flex-col md:flex-row">
+    <!-- Left Side: User List -->
+    <div class="user-list w-full md:w-1/3 bg-gray-100 p-4 overflow-y-auto">
+        <h1 class="text-3xl font-bold mb-4">Welcome to the Dashboard, <%= user.name %>
+        </h1>
+        <p class="text-gray-500 mb-6">This is where you can see your recent conversations.</p>
+
+        <h2 class="text-2xl font-semibold mb-4">Recent Conversations</h2>
+        <div class="space-y-4">
+            <% if (users.length> 0) { %>
+                <% users.forEach((user)=> { %>
+                    <div class="user-item flex items-center p-4 border-b border-gray-300 cursor-pointer hover:bg-gray-200"
+                        onclick="openChat('<%= user._id %>')" data-id='<%= user._id %>'>
+                        <img src="http://localhost:4000/<%= user.image %>"
+                            class="w-12 h-12 bg-gray-300 rounded-full mr-4" alt="User Profile Image" />
+                        <div class="flex-1">
+                            <p class="font-semibold text-sm">
+                                <%= user.name %>
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-500" id="status-<%= user._id %>">
+                                    <%= user.message %>
+
+                                </p>
+
+
+                            </div>
+
+                            <span id="onlineStatus-<%= user._id %>"
+                                class="text-xs <% if (user.isOnline == 1) { %> text-green-500 <% } else { %> text-gray-500 <% } %>">
+                                <% if (user.isOnline==1) { %>
+                                    (Online)
+                                    <% } else { %>
+                                        (Offline)
+                                        <% } %>
+                            </span>
+                        </div>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <p class="text-center">No recent conversations.</p>
+                            <% } %>
+        </div>
+
+    </div>
+
+    <!-- Right Side: Chat Window -->
+    <div class="chat-box flex-1 bg-white p-6 overflow-y-auto hidden md:block" id="chatBox">
+        <div class="chat-header flex items-center justify-between">
+            <div class="flex items-center">
+                <img id="chatUserImage" class="w-12 h-12 bg-gray-300 rounded-full mr-4" alt="Chat User Image" />
+                <p id="chatUserName" class="font-semibold text-xl">Select a user to chat</p>
+            </div>
+        </div>
+
+        <div id="chatMessages" class="mt-6 h-96 overflow-y-scroll">
+            <!-- Chat messages will be dynamically injected here -->
+            <!-- <% if (user.isSender) { %>
+                <button onclick="deleteMessage('<%= user._id %>')" class="text-red-500 text-xs ml-2 hover:text-red-700">
+                </button>
+            <% } %> -->
+
+
+        </div>
+
+        <form action="" class="chat-input mt-4 flex items-center border-t pt-2">
+            <input type="text" id="messageInput" class="w-full p-2 border rounded-md" placeholder="Type a message..." />
+            <button type="submit" id="sendMessage" class="ml-2 text-white bg-blue-500 p-2 rounded-md">Send</button>
+        </form>
+    </div>
+
+
+
+
+    <!-- Modal -->
+
+    <div id="edit-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-6 rounded-md shadow-md">
+            <h2 class="text-xl font-bold mb-4">Edit Message</h2>
+            <textarea id="editMessageInput" class="w-full p-2 border rounded-md" rows="4"></textarea>
+            <div class="flex justify-end mt-4">
+                <button onclick="closeEditModal()"
+                    class="mr-4 bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
+                <button onclick="saveEditedMessage()" class="bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+   
+
+</script>
